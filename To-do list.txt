@@ -1,0 +1,6 @@
+
+
+
+
+- faire une API
+- Faire de ce projet un setup
