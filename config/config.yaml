@@ -1,0 +1,15 @@
+data:
+  raw_path: "data/raw/"
+  processed_path: "data/processed/"
+  interim_path: "data/interim/"
+  runs_file: "data/runs.csv"
+  races_file: "data/races.csv"
+
+model:
+  type: "xgboost"
+  hyperparameters:
+    learning_rate: 0.1
+    n_estimators: 100
+    max_depth: 6
+
+---
