@@ -17,5 +17,4 @@ def train_linear_regression(X_train, y_train):
     model_path = os.path.join(model_dir, "linear_regression.pkl")
     joblib.dump(model, model_path)
 
-    joblib.dump(model, "models/linear_regression.pkl")
     print("Successfully trained linear_regression model")
