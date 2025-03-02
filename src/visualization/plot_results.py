@@ -10,3 +10,14 @@ def plot_cumulative_gains(df, bets, strategy_name="Baseline Strategy"):
     plt.title(f"Cumulative Gains for {strategy_name} with {bets} bets")
     plt.grid(True)
     plt.show()
+
+def plot_cumulative_gains_per_horse(df, bets, strategy_name="Baseline Strategy"):
+    df['cumulative_gains'] = df['gains'].cumsum()
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(df.index, df['cumulative_gains'], marker='o', linestyle='-')
+    plt.xlabel("Index")
+    plt.ylabel("Cumulative Gains (HKD)")
+    plt.title(f"Cumulative Gains for {strategy_name} with {bets} bets")
+    plt.grid(True)
+    plt.show()
