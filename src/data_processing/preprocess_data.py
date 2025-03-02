@@ -19,3 +19,10 @@ def split_train_test(df, train_ratio = 0.8):
     y_test = df_test['won']
     X_test = df_test.drop(columns=['won', 'horse_id'])
     return y_train, y_test, X_train, X_test, df_train, df_test
+
+def fetch_winning_dividends(df):
+    df_races = pd.read_csv("../data/raw/races.csv")
+
+    df_join = df.merge(df_races[['race_id','win_dividend1']], on=['race_id'], how='left')
+    df_filtered = df_join[df_join['top_prediction'] == 1]
+    return df_filtered
