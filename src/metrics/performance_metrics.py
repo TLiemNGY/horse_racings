@@ -2,6 +2,9 @@ import pandas as pd
 import shap
 from sklearn.metrics import mean_absolute_error
 from xgboost import XGBRegressor
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def prepare_predictions(df_test_original, y_predict):
     df = df_test_original.copy()
@@ -39,8 +42,8 @@ def shap_analysis(X_test, model):
 
 
 def test_features(X_train, X_test, y_train,y_test):
-    model = XGBRegressor()
-    model.fit(X_train,X_test)
+    model = LinearRegression()
+    model.fit(X_train,y_train)
     y_pred = model.predict(X_test)
     mae_before = mean_absolute_error(y_test,y_pred)
 
@@ -62,6 +65,24 @@ def test_features(X_train, X_test, y_train,y_test):
         results.append({"Feature": feature, "MAE Before": mae_before, "MAE after": mae_after, "Delta": delta})
 
     results = pd.DataFrame(results)
+
+    # Trier les résultats par Delta (impact de la feature)
+    results = results.sort_values(by="Delta", ascending=False)
+
+    # Affichage du top 10 des features les plus influentes
+    plt.figure(figsize=(12, 6))
+    sns.barplot(
+        data=results.head(10),
+        x="Delta",
+        y="Feature",
+        palette="coolwarm"
+    )
+    plt.xlabel("Variation de MAE (Delta)")
+    plt.ylabel("Feature")
+    plt.title("Classement des features qui dégradent le plus la précision du modèle")
+    plt.axvline(0, color='black', linestyle='dashed', linewidth=1)
+    plt.show()
+
     return results
 
     
