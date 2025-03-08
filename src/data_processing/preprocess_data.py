@@ -1,10 +1,25 @@
 import pandas as pd
 
-def preprocess_data(df):
-    df = pd.get_dummies(df, columns=['venue', 'config', 'race_class', 'surface', 'distance', 'going', 'horse_country',
-                                     'horse_type'], dtype=int, drop_first=True)
+def fill_na(df):
+    df['place_odds'].fillna(df['place_odds'].mean(), inplace=True)
 
-    df['place_odds'].fillna(0, inplace=True)
+    df['horse_country'] = df['horse_country'].fillna('Unknown')
+    df['horse_type'] = df['horse_type'].fillna('Unknown')
+    return df
+
+def preprocess_data(df, model_name):
+
+    if model_name == "linear_regression":
+        categorical_columns = ['venue', 'config', 'race_class', 'surface', 'distance', 'going', 'horse_country',
+                               'horse_type']
+        df = pd.get_dummies(df, columns=categorical_columns, dtype=int, drop_first=True)
+
+    elif model_name in ["xgboost","catboost"]:
+        categorical_columns = ['venue', 'config', 'race_class', 'surface', 'distance', 'going', 'horse_country',
+                               'horse_type', 'horse_gear', 'trainer_id', 'jockey_id', 'horse_rating','horse_ratings']
+        for col in categorical_columns:
+            df[col] = df[col].astype("category")
+
     return df
 
 def split_train_test(df, train_ratio = 0.8):

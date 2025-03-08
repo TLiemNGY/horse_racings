@@ -12,11 +12,21 @@ def clean_data_races(df):
                      'time1', 'time2', 'time3', 'time4', 'time5', 'time6', 'time7'
                      ], inplace=True)
 
-def clean_before_fitting(df):
-    df.drop(columns=['date','race_no','horse_ratings','prize','result',
+def clean_before_fitting(df, model_name):
+
+    if model_name == "linear_regression":
+
+        df.drop(columns=['date','race_no','prize','result',
                           'place_combination1','place_combination2','place_combination3','place_combination4',
                           'place_dividend1','place_dividend2','place_dividend3','place_dividend4',
                           'win_combination1','win_dividend1','win_combination2','win_dividend2',
-                          'lengths_behind','horse_gear','trainer_id','jockey_id'], inplace=True)
+                          'lengths_behind','horse_gear','trainer_id','jockey_id','horse_rating','horse_ratings'], inplace=True)
+
+    elif model_name in ['xgboost','catboost']:
+        df.drop(columns=['date','race_no','prize','result',
+                          'place_combination1','place_combination2','place_combination3','place_combination4',
+                          'place_dividend1','place_dividend2','place_dividend3','place_dividend4',
+                          'win_combination1','win_dividend1','win_combination2','win_dividend2',
+                          'lengths_behind'], inplace=True)
 
     df.set_index("race_id", inplace=True)
