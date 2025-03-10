@@ -1,4 +1,3 @@
-# README.md
 # Projet de Prédiction et Stratégies d'Investissement
 
 ## Description
@@ -44,13 +43,27 @@ Nom_du_projet/
 ```
 
 ## Installation
-```bash
-pip install -r requirements.txt
-```
+1. Assurez-vous d'avoir Python 3.11 installé sur votre système.
+2. Si vous n'avez pas encore d'environnement virtuel pour ce projet, créez-en un avec :
+   ```bash
+   py -3.11 -m venv .venv
+   ```
+3. Activez l'environnement virtuel :
+   - Sous macOS/Linux :
+     ```bash
+     source venv/bin/activate
+     ```
+   - Sous Windows :
+     ```bash
+     source .venv/Scripts/activate
+     ```
+4. Installez les dépendances requises :
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 ## Utilisation
 ```bash
 python src/models/train.py
 ```
 
----
