@@ -13,7 +13,7 @@ from data_processing.output_to_csv import output_to_csv
 from data_processing.feature_engineering import feature_engineering
 from data_processing.preprocess_data import fill_na
 
-def run_model(model_name, use_feature_engineering):
+def run_model(model_name, use_feature_engineering, use_bet_odds=True):
     # Load datasets
     df_runs = load_data("../data/raw/runs.csv")
     df_races = load_data("../data/raw/races.csv")
@@ -35,6 +35,10 @@ def run_model(model_name, use_feature_engineering):
     else :
         cat_features = ['venue', 'config', 'race_class', 'surface', 'distance', 'going', 'horse_country',
                                'horse_type', 'horse_gear', 'trainer_id', 'jockey_id', 'horse_rating','horse_ratings','track_conditions']
+
+    if not use_bet_odds:
+        print(df.columns)
+        df.drop(columns=['win_odds', 'place_odds'], inplace=True)
 
     # Train-test split
     y_train, y_test, X_train, X_test, df_train, df_test = split_train_test(df, train_ratio=0.8)

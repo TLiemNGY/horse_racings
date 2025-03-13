@@ -11,6 +11,8 @@ def plot_cumulative_gains(df, bets, strategy_name="Baseline Strategy"):
     plt.grid(True)
     plt.show()
 
+    return df
+
 def plot_cumulative_gains_per_horse(df, bets, strategy_name="Baseline Strategy"):
     df['cumulative_gains'] = df['gains'].cumsum()
 
