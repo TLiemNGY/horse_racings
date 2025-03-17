@@ -12,6 +12,7 @@ from metrics.performance_metrics import prepare_predictions, compute_top_predict
 from data_processing.output_to_csv import output_to_csv
 from data_processing.feature_engineering import feature_engineering
 from data_processing.preprocess_data import fill_na
+from data_processing.feature_engineering import add_lag_features
 
 def run_model(model_name, use_feature_engineering, use_bet_odds=True):
     # Load datasets
@@ -22,6 +23,7 @@ def run_model(model_name, use_feature_engineering, use_bet_odds=True):
     clean_data_runs(df_runs)
     clean_data_races(df_races)
     df = merge_data(df_runs, df_races)
+    df = add_lag_features(df)
     clean_before_fitting(df, model_name)
 
     # Preprocessing data regarding model
