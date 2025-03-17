@@ -1,9 +1,12 @@
+import pandas as pd
+
 def add_lag_features(df):
-    df['mean_result_last_3'] = df.groupby('horse_id')['result'].shift().transform(lambda x: x.rolling(3).mean())
-    df['win_rate_last_5'] = df.groupby('horse_id')['won'].shift().transform(lambda x: x.rolling(5).mean())
-    df['avg_lengths_behind_last_3'] = df.groupby('horse_id')['lengths_behind'].shift().transform(lambda x: x.rolling(3).mean())
-    df['rank_change_last_3'] = df.groupby('horse_id')['result'].shift().diff(3)
-    df['days_since_last_race'] = df.groupby('horse_id')['date'].diff().dt.days.shift()
+    #df['date'] = pd.to_datetime(df['date'])
+    #df['mean_result_last_5'] = df.groupby('horse_id')['result'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)
+    #df['win_rate_last_5'] = df.groupby('horse_id')['won'].shift().transform(lambda x: x.rolling(5).mean()).fillna(0)
+    #df['avg_lengths_behind_last_3'] = df.groupby('horse_id')['lengths_behind'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)
+    #df['rank_change_last_3'] = df.groupby('horse_id')['result'].shift().diff(3).fillna(0)
+    #df['days_since_last_race'] = df.groupby('horse_id')['date'].diff().dt.days.shift().fillna(0)
     return df
 
 def feature_engineering(df, model_name):

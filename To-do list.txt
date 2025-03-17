@@ -1,3 +1,6 @@
-token test
-- faire une API
-- Faire de ce projet un setup
+- catboost ranker
+- tester le lag
+- finetuner les hyperparamètres
+- normaliser win_odds pour que le modèle apprenne mieux des autres features
+- Bonus : Évaluer la position moyenne du vrai gagnant
+- modifier la fonction dont CatBoost fait du bagging

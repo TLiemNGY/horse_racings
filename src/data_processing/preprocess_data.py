@@ -22,7 +22,7 @@ def preprocess_data(df, model_name):
 
     return df
 
-def split_train_test(df, train_ratio = 0.8):
+def split_train_test(df, result_or_won, train_ratio = 0.8):
     unique_races = df.index.unique()
 
     split_index = int(len(unique_races) * train_ratio)
@@ -33,11 +33,17 @@ def split_train_test(df, train_ratio = 0.8):
     df_train = df[df.index.isin(train_races)]
     df_test = df[df.index.isin(test_races)]
 
-    y_train = df_train['won']
-    X_train = df_train.drop(columns=['won', 'horse_id'])
+    if result_or_won=='won':
+        y_train = df_train['won']
+        y_test = df_test['won']
 
-    y_test = df_test['won']
-    X_test = df_test.drop(columns=['won', 'horse_id'])
+    elif result_or_won=='result':
+        y_train = df_train['result']
+        y_test = df_test['result']
+
+    X_train = df_train.drop(columns=['won','result'])
+    X_test = df_test.drop(columns=['won','result'])
+
     return y_train, y_test, X_train, X_test, df_train, df_test
 
 def fetch_winning_dividends(df):
