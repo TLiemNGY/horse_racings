@@ -2,12 +2,22 @@ import pandas as pd
 
 
 def add_lag_features(df):
-    #df['date'] = pd.to_datetime(df['date'])
-    #df['mean_result_last_5'] = df.groupby('horse_id')['result'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)
-    #df['win_rate_last_5'] = df.groupby('horse_id')['won'].shift().transform(lambda x: x.rolling(5).mean()).fillna(0)
-    #df['avg_lengths_behind_last_3'] = df.groupby('horse_id')['lengths_behind'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)
-    #df['rank_change_last_3'] = df.groupby('horse_id')['result'].shift().diff(3).fillna(0)
-    #df['days_since_last_race'] = df.groupby('horse_id')['date'].diff().dt.days.shift().fillna(0)
+    df['date'] = pd.to_datetime(df['date'])
+    df['mean_result_last_5'] = df.groupby('horse_id')['result'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)
+    df['win_rate_last_5'] = df.groupby('horse_id')['won'].shift().transform(lambda x: x.rolling(5).mean()).fillna(0)
+    df['avg_lengths_behind_last_3'] = df.groupby('horse_id')['lengths_behind'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)
+    df['rank_change_last_3'] = df.groupby('horse_id')['result'].shift().diff(3).fillna(0)
+    df['days_since_last_race'] = df.groupby('horse_id')['date'].diff().dt.days.shift().fillna(0)
+    return df
+
+def add_interaction_features(df):
+    df["race_avg_win_odds"] = df.groupby("race_id")["win_odds"].transform("mean")
+    df["race_std_win_odds"] = df.groupby("race_id")["win_odds"].transform("std")
+    df["relative_odds"] = df["win_odds"] / df["race_avg_win_odds"]
+
+    df["race_avg_weight"] = df.groupby("race_id")["actual_weight"].transform("mean")
+    df["relative_weight"] = df["actual_weight"] / df["race_avg_weight"]
+
     return df
 
 def feature_engineering(df, model_name):
@@ -20,7 +30,7 @@ def feature_engineering(df, model_name):
     if model_name == 'linear_regression':
         df = df
 
-    elif model_name in ['xgboost','catboost']:
+    elif model_name in ['xgboost','catboost','transformer']:
         #df['track_conditions'] = df['going'].astype(str) + "_" + df['surface'].astype(str) + "_" + df['config'].astype(str)
         #df['track_conditions'] = df['track_conditions'].astype("category")
         #cat_features.append('track_conditions')

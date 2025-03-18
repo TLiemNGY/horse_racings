@@ -12,9 +12,6 @@ from data_processing.merge_data import merge_data
 from data_processing.output_to_csv import output_to_csv
 from data_processing.preprocess_data import (fill_na, preprocess_data,
                                              split_train_test, create_prediction_column)
-from metrics.metrics_for_ranker import (compute_ranking, compute_top1_accuracy,
-                                        finalize_ranker_dataframe,
-                                        prepare_ranker_predictions)
 from metrics.performance_metrics import (compute_accuracy,
                                          compute_top_prediction,
                                          finalize_dataframe,
@@ -38,6 +35,7 @@ def run_model(model_name, use_feature_engineering, use_bet_odds=True):
     # Preprocessing data regarding model
     df = fill_na(df)
     df = preprocess_data(df, model_name)
+    df.set_index("race_id", inplace=True)
 
     # Feature engineering
     if use_feature_engineering:
@@ -57,7 +55,7 @@ def run_model(model_name, use_feature_engineering, use_bet_odds=True):
 
     # Print infos au besoin
     print(X_train.info())
-    print(y_train.head(14))
+    #print(y_train.head(14))
     #print(X_test.info())
     #print(X_train.columns)
 

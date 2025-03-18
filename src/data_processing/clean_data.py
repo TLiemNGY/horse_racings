@@ -22,11 +22,9 @@ def clean_before_fitting(df, model_name):
                           'win_combination1','win_dividend1','win_combination2','win_dividend2',
                           'lengths_behind','horse_gear','trainer_id','jockey_id','horse_rating','horse_ratings'], inplace=True)
 
-    elif model_name in ['xgboost','catboost','catboost_ranker']:
+    elif model_name in ['xgboost','catboost','transformer']:
         df.drop(columns=['date','race_no','prize',
                           'place_combination1','place_combination2','place_combination3','place_combination4',
                           'place_dividend1','place_dividend2','place_dividend3','place_dividend4',
                           'win_combination1','win_dividend1','win_combination2','win_dividend2',
                           'lengths_behind'], inplace=True)
-
-    df.set_index("race_id", inplace=True)

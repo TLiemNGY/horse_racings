@@ -18,6 +18,11 @@ def compute_top_prediction(df):
     df.drop(columns=['max_prediction'], inplace=True)
     return df
 
+def compute_top_prediction_transformer(df):
+    df['max_prediction'] = df.groupby('race_id')['y_predict'].transform('max')
+    df['top_prediction'] = (df['y_predict'] == df['max_prediction']).astype(int)
+    df.drop(columns=['max_prediction'], inplace=True)
+    return df
 
 def finalize_dataframe(df):
     df = df[['horse_id', 'won', 'y_predict', 'top_prediction']]

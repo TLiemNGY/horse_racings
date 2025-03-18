@@ -15,7 +15,7 @@ def preprocess_data(df, model_name):
                                'horse_type']
         df = pd.get_dummies(df, columns=categorical_columns, dtype=int, drop_first=True)
 
-    elif model_name in ["xgboost","catboost"]:
+    elif model_name in ["xgboost","catboost","transformer"]:
         categorical_columns = ['venue', 'config', 'race_class', 'surface', 'distance', 'going', 'horse_country',
                                'horse_type', 'horse_gear', 'trainer_id', 'jockey_id', 'horse_rating','horse_ratings']
         for col in categorical_columns:
@@ -41,6 +41,10 @@ def split_train_test(df, relative_or_binary_ranking, train_ratio = 0.8):
     elif relative_or_binary_ranking=='relative_ranking':
         y_train = df_train['relative_ranking']
         y_test = df_test['relative_ranking']
+
+    elif relative_or_binary_ranking=='result':
+        y_train = df_train['result']
+        y_test = df_test['result']
 
     X_train = df_train.drop(columns=['won','result','relative_ranking'])
     X_test = df_test.drop(columns=['won','result','relative_ranking'])
@@ -74,6 +78,6 @@ def fetch_winning_dividends_per_prediction(df):
 def create_prediction_column(df):
     df['total_horses'] = df.groupby('race_id')['result'].transform('max')
     alpha = 2  # Facteur d'amplification des pénalités
-    df['relative_ranking'] = -np.tanh(alpha * ((df['result'] - 1) / (df['total_horses'] - 1)))
+    df['relative_ranking'] = 1 - np.tanh(alpha * ((df['result'] - 1) / (df['total_horses'] - 1)))
 
     return df
