@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def clean_data_runs(df):
     df.drop(columns=['finish_time', 'horse_no',
                      'position_sec1', 'position_sec2', 'position_sec3', 'position_sec4', 'position_sec5',
@@ -15,7 +16,6 @@ def clean_data_races(df):
 def clean_before_fitting(df, model_name):
 
     if model_name == "linear_regression":
-
         df.drop(columns=['date','race_no','prize',
                           'place_combination1','place_combination2','place_combination3','place_combination4',
                           'place_dividend1','place_dividend2','place_dividend3','place_dividend4',

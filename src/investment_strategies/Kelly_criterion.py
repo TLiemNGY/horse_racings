@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def kelly_criterion(df, amount_bet, duration, min_kelly, calibrate_probabilities=True, single_bet_per_race=True):
     df = df.head(duration).copy()
 

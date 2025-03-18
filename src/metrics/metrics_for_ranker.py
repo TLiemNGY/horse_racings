@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def prepare_ranker_predictions(df_test_original, y_predict):
     df = df_test_original.copy()
     df['y_predict'] = y_predict

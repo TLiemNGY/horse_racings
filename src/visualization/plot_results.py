@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 def plot_cumulative_gains(df, bets, strategy_name="Baseline Strategy"):
     df['cumulative_gains'] = df['gains'].cumsum()
 

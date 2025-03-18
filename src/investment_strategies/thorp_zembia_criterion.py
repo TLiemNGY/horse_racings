@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.optimize import minimize
 
+
 def thorp_zembia_criterion(df, amount_bet, duration, min_kelly=0.01):
     """
     Applique le critère de Thorp-Zembia pour optimiser les mises sur une course.

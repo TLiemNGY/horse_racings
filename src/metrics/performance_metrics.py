@@ -1,10 +1,10 @@
+import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 import shap
+from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error
 from xgboost import XGBRegressor
-from sklearn.linear_model import LinearRegression
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 def prepare_predictions(df_test_original, y_predict):
     df = df_test_original.copy()

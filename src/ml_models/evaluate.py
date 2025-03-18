@@ -1,8 +1,9 @@
 import pandas as pd
-from ml_models.pipeline import run_model
+
 from data_processing.preprocess_data import fetch_winning_dividends
 from investment_strategies.baseline_strategy import baseline_strategy
 from metrics.performance_metrics import compute_accuracy
+from ml_models.pipeline import run_model
 
 
 def compare_models(model_configs):

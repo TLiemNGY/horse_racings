@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def add_lag_features(df):
     #df['date'] = pd.to_datetime(df['date'])
     #df['mean_result_last_5'] = df.groupby('horse_id')['result'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)

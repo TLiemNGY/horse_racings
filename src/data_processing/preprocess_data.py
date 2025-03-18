@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 def fill_na(df):
     df['place_odds'].fillna(df['place_odds'].mean(), inplace=True)
@@ -22,7 +23,7 @@ def preprocess_data(df, model_name):
 
     return df
 
-def split_train_test(df, result_or_won, train_ratio = 0.8):
+def split_train_test(df, relative_or_binary_ranking, train_ratio = 0.8):
     unique_races = df.index.unique()
 
     split_index = int(len(unique_races) * train_ratio)
@@ -33,16 +34,16 @@ def split_train_test(df, result_or_won, train_ratio = 0.8):
     df_train = df[df.index.isin(train_races)]
     df_test = df[df.index.isin(test_races)]
 
-    if result_or_won=='won':
+    if relative_or_binary_ranking=='won':
         y_train = df_train['won']
         y_test = df_test['won']
 
-    elif result_or_won=='result':
-        y_train = df_train['result']
-        y_test = df_test['result']
+    elif relative_or_binary_ranking=='relative_ranking':
+        y_train = df_train['relative_ranking']
+        y_test = df_test['relative_ranking']
 
-    X_train = df_train.drop(columns=['won','result'])
-    X_test = df_test.drop(columns=['won','result'])
+    X_train = df_train.drop(columns=['won','result','relative_ranking'])
+    X_test = df_test.drop(columns=['won','result','relative_ranking'])
 
     return y_train, y_test, X_train, X_test, df_train, df_test
 
@@ -68,4 +69,11 @@ def fetch_winning_dividends_per_prediction(df):
 
     df['num_horses'] = df.groupby('race_id')['horse_id'].transform('count')
     df['win_dividend1'] = df['win_dividend1'] / 10  # 10 HKD en minimal et une unité c'est 10 HKD
+    return df
+
+def create_prediction_column(df):
+    df['total_horses'] = df.groupby('race_id')['result'].transform('max')
+    alpha = 2  # Facteur d'amplification des pénalités
+    df['relative_ranking'] = -np.tanh(alpha * ((df['result'] - 1) / (df['total_horses'] - 1)))
+
     return df
