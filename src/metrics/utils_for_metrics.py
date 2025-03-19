@@ -18,7 +18,7 @@ def compute_top_prediction_per_race(df):
     return df
 
 def build_output_dataframe(df):
-    df = df[['horse_id', 'won', 'y_predict', 'top_prediction']]
+    df = df[['race_id','horse_id', 'won', 'y_predict', 'top_prediction']]
     df['won'] = df['won'].astype(int)
     return df
     

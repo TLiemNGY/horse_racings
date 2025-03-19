@@ -6,7 +6,7 @@ from data_processing.merge_data import merge_data
 from data_processing.feature_engineering import add_interaction_features, add_combined_cat_features, add_lag_features
 from data_processing.utils import load_data, define_cat_features, output_data_to_csv, create_prediction_column, fill_na, split_train_test
 from metrics.metrics import compute_global_accuracy
-from metrics.utils_for_metrics import add_predictions_to_df_test, build_output_dataframe, compute
+from metrics.utils_for_metrics import add_predictions_to_df_test, build_output_dataframe, compute_top_prediction_per_race
 from xgboost import XGBRegressor
 from data_processing.clean_data import clean_raw_data, clean_before_fit
 
