@@ -17,20 +17,12 @@ def add_interaction_features(df):
 
     df["race_avg_weight"] = df.groupby("race_id")["actual_weight"].transform("mean")
     df["relative_weight"] = df["actual_weight"] / df["race_avg_weight"]
-
+    df['global_weight'] = df['actual_weight'] - df['declared_weight']
     return df
 
-def feature_engineering(df, model_name):
-    cat_features = ['venue', 'config', 'race_class', 'surface', 'distance', 'going', 'horse_country',
-                    'horse_type', 'horse_gear', 'trainer_id', 'jockey_id', 'horse_rating', 'horse_ratings']
+def add_combined_cat_features(df, cat_features, model_name):
 
-    # Variables sans prétraitement
-    df['global_weight'] = df['actual_weight'] - df['declared_weight']
-
-    if model_name == 'linear_regression':
-        df = df
-
-    elif model_name in ['xgboost','catboost','transformer']:
+    if model_name in ['xgboost','catboost','transformer']:
         #df['track_conditions'] = df['going'].astype(str) + "_" + df['surface'].astype(str) + "_" + df['config'].astype(str)
         #df['track_conditions'] = df['track_conditions'].astype("category")
         #cat_features.append('track_conditions')
@@ -52,9 +44,4 @@ def feature_engineering(df, model_name):
         #cat_features.append('distance_vs_weight')
 
         # df['weather'] = df['mean_temp'] + df['going']
-
-        df = df
-
     return df, cat_features
-
-# Rajouter la météo
