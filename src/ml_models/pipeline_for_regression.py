@@ -60,7 +60,7 @@ def run_model(model_name, use_feature_engineering, use_bet_odds=True):
 
     elif model_name == "xgboost":
         print ('training xgboost model')
-        model = XGBRegressor(enable_categorical=True)
+        model = XGBRegressor(objective="reg:squarederror", eval_metric="rmse",enable_categorical=True)
         model.fit(X_train, y_train)
 
     elif model_name == "catboost":
