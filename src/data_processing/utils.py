@@ -68,7 +68,7 @@ def define_cat_features(df, model_name):
 
     else:
         cat_features = ['venue', 'config', 'race_class', 'surface', 'distance', 'going', 'horse_country',
-                        'horse_type', 'horse_gear', 'trainer_id', 'jockey_id', 'horse_rating', 'horse_ratings']
+                        'horse_type', 'trainer_id', 'jockey_id', 'horse_rating', 'horse_ratings']
 
         for col in cat_features:
             df[col] = df[col].astype("category")

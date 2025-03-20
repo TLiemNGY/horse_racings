@@ -8,6 +8,7 @@ def plot_feature_importance(model, X_train):
 
     importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': feature_importances})
     importance_df = importance_df.sort_values(by='Importance', ascending=False)
+    importance_df = importance_df.head(15)
 
     plt.figure(figsize=(10, 5))
     plt.barh(importance_df['Feature'], importance_df['Importance'])

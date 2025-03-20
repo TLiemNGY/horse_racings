@@ -23,25 +23,39 @@ def add_interaction_features(df):
 def add_combined_cat_features(df, cat_features, model_name):
 
     if model_name in ['xgboost','catboost','transformer']:
-        #df['track_conditions'] = df['going'].astype(str) + "_" + df['surface'].astype(str) + "_" + df['config'].astype(str)
-        #df['track_conditions'] = df['track_conditions'].astype("category")
-        #cat_features.append('track_conditions')
+        df['track_conditions'] = df['going'].astype(str) + "_" + df['surface'].astype(str) + "_" + df['config'].astype(str)
+        df['track_conditions'] = df['track_conditions'].astype("category")
+        cat_features.append('track_conditions')
 
         df['specialized_trainer'] = df['trainer_id'].astype(str) + "_" + df['jockey_id'].astype(str) + "_" + df['horse_rating'].astype(str)
         df['specialized_trainer'] = df['specialized_trainer'].astype("category")
         cat_features.append('specialized_trainer')
 
-        #df['distance_vs_age'] = df['distance'].astype(str) + "_" + df['horse_age'].astype(str)
-        #df['distance_vs_age'].astype('category')
-        #cat_features.append('distance_vs_age')
+        df['distance_vs_age'] = df['distance'].astype(str) + "_" + df['horse_age'].astype(str)
+        df['distance_vs_age'].astype('category')
+        cat_features.append('distance_vs_age')
 
-        #df['country_specificity'] = df['horse_country'].astype(str) + "_" + df['horse_type'].astype(str) + "_" + df['horse_ratings'].astype(str)
-        #df['country_specificity'].astype('category')
-        #cat_features.append('country_specificity')
+        df['country_specificity'] = df['horse_country'].astype(str) + "_" + df['horse_type'].astype(str) + "_" + df['horse_ratings'].astype(str)
+        df['country_specificity'].astype('category')
+        cat_features.append('country_specificity')
 
-        #df['distance_vs_weight'] = df['distance'].astype(str) + "_" + df['actual_weight'].astype(str)
-        #df['distance_vs_weight'].astype('category')
-        #cat_features.append('distance_vs_weight')
+        df['distance_vs_weight'] = df['distance'].astype(str) + "_" + df['actual_weight'].astype(str)
+        df['distance_vs_weight'].astype('category')
+        cat_features.append('distance_vs_weight')
 
         # df['weather'] = df['mean_temp'] + df['going']
     return df, cat_features
+
+def simplify_features(df):
+    top_gears = ["B", "TT", "H", "CP", "SR", "XB", "V", "P", "TT/B", "TT/H"]
+
+    def transform_gear(gear):
+        for g in top_gears:
+            if g in gear:
+                return g
+        return "OTHER"
+
+    df["horse_gear_simplified"] = df["horse_gear"].apply(transform_gear)
+    df = pd.get_dummies(df, columns=["horse_gear_simplified"], prefix="gear")
+    df.drop(columns=["horse_gear"], inplace=True)
+    return df

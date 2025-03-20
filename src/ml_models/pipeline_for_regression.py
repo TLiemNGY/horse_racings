@@ -3,10 +3,11 @@ from catboost import CatBoostRegressor
 from sklearn.linear_model import LinearRegression
 
 from data_processing.merge_data import merge_data
-from data_processing.feature_engineering import add_interaction_features, add_combined_cat_features, add_lag_features
+from data_processing.feature_engineering import add_interaction_features, add_combined_cat_features, add_lag_features, simplify_features
 from data_processing.utils import load_data, define_cat_features, output_data_to_csv, create_prediction_column, fill_na, split_train_test
 from metrics.metrics import compute_global_accuracy
 from metrics.utils_for_metrics import add_predictions_to_df_test, build_output_dataframe, compute_top_prediction_per_race
+
 from xgboost import XGBRegressor
 from data_processing.clean_data import clean_raw_data, clean_before_fit
 
@@ -26,6 +27,7 @@ def run_preprocess_pipeline(model_name, use_feature_engineering, use_bet_odds):
     if use_feature_engineering:
         df = add_lag_features(df)
         df = add_interaction_features(df)
+        df = simplify_features(df)
         df, cat_features = add_combined_cat_features(df, cat_features, model_name)
 
     # Last adjustments before fit
@@ -90,4 +92,4 @@ def run_model(model_name, use_feature_engineering, use_bet_odds=True):
 
         print(f"✅ Précision basée sur les courses : {accuracy:.2f}%")
 
-    return model, X_train, df_stats
+    return model, X_train, df_stats, df_test
