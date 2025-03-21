@@ -1,8 +1,4 @@
 - catboost ranker
-- tester le lag
 - finetuner les hyperparamètres
-- normaliser win_odds pour que le modèle apprenne mieux des autres features
-- Bonus : Évaluer la position moyenne du vrai gagnant
-- modifier la fonction dont CatBoost fait du bagging
+- modifier la façon dont CatBoost fait du bagging (?)
 - finetuner les fill_na
-- se baser sur les features corrélés pour faire de l'arbitrage + rédiger un code qui teste les features restantes

@@ -3,11 +3,13 @@ import pandas as pd
 
 def add_lag_features(df):
     df['date'] = pd.to_datetime(df['date'])
-    df['mean_result_last_5'] = df.groupby('horse_id')['result'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)
-    df['win_rate_last_5'] = df.groupby('horse_id')['won'].shift().transform(lambda x: x.rolling(5).mean()).fillna(0)
-    df['avg_lengths_behind_last_3'] = df.groupby('horse_id')['lengths_behind'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0)
-    df['rank_change_last_3'] = df.groupby('horse_id')['result'].shift().diff(3).fillna(0)
-    df['days_since_last_race'] = df.groupby('horse_id')['date'].diff().dt.days.shift().fillna(0)
+
+    df['mean_result_last_5'] = df.groupby('horse_id')['result'].shift().transform(lambda x: x.rolling(3).mean()).fillna(0) # OK
+    df['win_rate_last_10'] = df.groupby('horse_id')['won'].shift().transform(lambda x: x.rolling(10).mean()).fillna(0) # OK
+    df['avg_lengths_behind_last_5'] = df.groupby('horse_id')['lengths_behind'].shift().transform(lambda x: x.rolling(5).mean()).fillna(0) # OK
+    df['rank_change_last_3'] = df.groupby('horse_id')['result'].shift().diff(3).fillna(0) # OK
+    df['rank_change_last_10'] = df.groupby('horse_id')['result'].shift().diff(10).fillna(0) # OK
+    df['days_since_last_race'] = df.groupby('horse_id')['date'].diff().dt.days.shift().fillna(0) # Hmm
     return df
 
 def add_interaction_features(df):
@@ -18,6 +20,10 @@ def add_interaction_features(df):
     df["race_avg_weight"] = df.groupby("race_id")["actual_weight"].transform("mean")
     df["relative_weight"] = df["actual_weight"] / df["race_avg_weight"]
     df['global_weight'] = df['actual_weight'] - df['declared_weight']
+
+    df["relative_draw"] = df["draw"] / df["total_horses"]
+
+    df.drop(columns=['declared_weight','race_avg_weight'], inplace=True)
     return df
 
 def add_combined_cat_features(df, cat_features, model_name):
