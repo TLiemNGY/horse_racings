@@ -39,7 +39,7 @@ def add_target_choices(df_train, df_test, choice):
 
 def split_train_test(df, choice, train_ratio=0.8):
     unique_races = df['race_id'].unique()
-    df.set_index("race_id", inplace=True)  # À remplacer par la métrique ...
+    df.set_index("race_id", inplace=True)
 
     split_index = int(len(unique_races) * train_ratio)
 
@@ -53,12 +53,18 @@ def split_train_test(df, choice, train_ratio=0.8):
 
     return y_train, y_test, X_train, X_test, df_train, df_test
 
-def fill_na(df):
-    df['place_odds'].fillna(df['place_odds'].mean(), inplace=True)
-    df['horse_country'] = df['horse_country'].cat.add_categories("Unknown").fillna("Unknown")
-    df['horse_type'] = df['horse_type'].cat.add_categories("Unknown").fillna("Unknown")
-    df['horse_type'] = df['horse_type'].fillna('Unknown')
+def fill_na(df, model_name):
+    if model_name =='lgbm':
+        df['place_odds'].fillna(df['place_odds'].mean(), inplace=True)
+
+    else:
+        df['place_odds'].fillna(df['place_odds'].mean(), inplace=True)
+        df['horse_country'] = df['horse_country'].cat.add_categories("Unknown").fillna("Unknown")
+        df['horse_type'] = df['horse_type'].cat.add_categories("Unknown").fillna("Unknown")
+        df['horse_type'] = df['horse_type'].fillna('Unknown')
+
     return df
+
 
 def define_cat_features(df, model_name):
     if model_name == "linear_regression":
@@ -74,3 +80,24 @@ def define_cat_features(df, model_name):
             df[col] = df[col].astype("category")
 
     return df, cat_features
+
+
+def convert_features_for_ranker(df, cat_features, one_hot_threshold=10):
+    """
+    - One-hot encode les features catégorielles avec peu de modalités (≤ threshold)
+    - Frequency encode les autres
+    """
+    nunique_dict = {col: df[col].nunique() for col in cat_features}
+    print(nunique_dict)
+
+    one_hot_cols = [col for col, n in nunique_dict.items() if n <= one_hot_threshold]
+    freq_enc_cols = [col for col in cat_features if col not in one_hot_cols]
+
+    # One-hot encoding
+    df = pd.get_dummies(df, columns=one_hot_cols, dtype=int, drop_first=True)
+
+    # Frequency encoding
+    for col in freq_enc_cols:
+        df[f'{col}_freq'] = df[col].map(df[col].value_counts())
+
+    return df

@@ -28,7 +28,7 @@ def add_interaction_features(df):
 
 def add_combined_cat_features(df, cat_features, model_name):
 
-    if model_name in ['xgboost','catboost','transformer']:
+    if model_name in ['xgboost','catboost','transformer','lgbm']:
         df['track_conditions'] = df['going'].astype(str) + "_" + df['surface'].astype(str) + "_" + df['config'].astype(str)
         df['track_conditions'] = df['track_conditions'].astype("category")
         cat_features.append('track_conditions')

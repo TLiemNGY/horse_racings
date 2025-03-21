@@ -32,7 +32,7 @@ def run_preprocess_pipeline(model_name, use_feature_engineering, use_bet_odds):
 
     # Last adjustments before fit
     df = clean_before_fit(df, model_name)
-    df = fill_na(df)
+    df = fill_na(df, model_name)
 
     # Should we use bet odds to predict results ?
     if not use_bet_odds:

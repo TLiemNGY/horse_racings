@@ -23,7 +23,7 @@ def clean_before_fit(df, model_name):
                           'win_combination1','win_dividend1','win_combination2','win_dividend2',
                           'lengths_behind','horse_gear','trainer_id','jockey_id','horse_rating','horse_ratings'], inplace=True)
 
-    elif model_name in ['xgboost','catboost','transformer']:
+    elif model_name in ['xgboost','catboost','transformer','lgbm']:
 
         df.drop(columns=['date','race_no','prize',
                           'place_combination1','place_combination2','place_combination3','place_combination4',
